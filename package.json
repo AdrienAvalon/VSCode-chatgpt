@@ -1,0 +1,36 @@
+{
+  "name": "chatgpt",
+  "displayName": "ChatGPT",
+  "description": "Chat with OpenAI's GPT-3 in VSCode",
+  "version": "1.0.0",
+  "publisher": "Adrien CROS",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Testing"
+  ],
+  "activationEvents": [
+    "onCommand:chatgpt.start"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "chatgpt.start",
+        "title": "Chat with GPT-3"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "@types/vscode": "^1.63.0",
+    "dotenv": "^16.0.3",
+    "typescript": "^4.5.4"
+  }
+}
