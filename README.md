@@ -1,71 +1,98 @@
-# avalon-chatgpt README
+<div align="center">
 
-This is the README for your extension "avalon-chatgpt". After writing up a brief description, we recommend including the following sections.
+# VSCode-chatgpt
 
-## Features
+**Un prototype d'extension VS Code pour poser une question depuis l'éditeur.**
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Une commande, une zone de saisie et une réponse à afficher ou copier :
+un premier projet TypeScript autour de l'intégration d'une API de génération de texte.
 
-For example if there is an image subfolder under your extension project workspace:
+[Explorer le projet](#explorer-en-local) · [Fonctionnement](#ce-qui-est-implémenté) · [État du prototype](#état-du-prototype)
 
-\!\[feature X\]\(images/feature-x.png\)
+[![TypeScript](https://img.shields.io/badge/TypeScript-extension-3178c6)](src/extension.ts)
+[![Prototype](https://img.shields.io/badge/statut-prototype-8b7cf6)](#état-du-prototype)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+</div>
 
-## Requirements
+## Ce qui est implémenté
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+| Étape | Comportement de l'extension |
+|---|---|
+| **Ouvrir** | commande `Chat with GPT-3` dans la palette VS Code (`chatgpt.start`) |
+| **Questionner** | champ de saisie, avec un message si la question est vide |
+| **Appeler** | fonction TypeScript `chatWithGPT` qui construit une requête HTTPS |
+| **Lire** | affichage du texte reçu dans une notification VS Code |
+| **Copier** | action `Copy Response` qui place la réponse dans le presse-papiers |
 
-## Extension Settings
+L'extension n'ajoute pas automatiquement le contenu des fichiers de code aux
+questions et ne maintient pas d'historique de conversation. Le flux prévu
+transmet la question saisie au service externe.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## État du prototype
 
-For example:
+L'interface et le client HTTP sont présents, mais **l'intégration API doit
+être reprise avant une utilisation réelle**. Le code de
+[`src/chatgpt.ts`](src/chatgpt.ts) référence des identifiants historiques
+(`davinci-codex` et `text-davinci-002`), place la clé dans le corps JSON et ne
+construit pas d'en-tête d'authentification `Authorization`.
 
-This extension contributes the following settings:
+Il ne vérifie pas non plus le statut HTTP avant de décoder la réponse et ne
+prévoit pas de gestion complète des erreurs réseau ou de décodage dans la
+commande. Le README décrit donc le prototype livré, sans annoncer un service
+de conversation opérationnel.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Explorer en local
 
-## Known Issues
+Il faut Node.js, npm et VS Code. Le manifeste déclare VS Code `^1.60.0` ; aucune
+matrice de compatibilité testée n'est fournie dans le dépôt.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+```bash
+git clone https://github.com/AdrienAvalon/VSCode-chatgpt.git
+cd VSCode-chatgpt
+npm ci
+npm run compile
+code .
+```
 
-## Release Notes
+Dans VS Code, sélectionnez **Run Extension** dans le panneau d'exécution et
+lancez le débogage avec `F5`. La configuration du dépôt démarre la compilation
+en surveillance, puis ouvre une fenêtre **Extension Development Host**.
+La commande **Chat with GPT-3** permet d'explorer le flux de saisie ; recevoir
+une réponse nécessite d'abord de corriger le client API.
 
-Users appreciate release notes as you update your extension.
+`npm run watch` relance la compilation lors des changements. Le résultat
+TypeScript est écrit dans `out/` ; cette compilation ne valide pas la
+connexion au service.
 
-### 1.0.0
+## Configuration et données
 
-Initial release of ...
+Le client lit `OPENAI_API_KEY` avec `dotenv`. Aucune option de configuration
+VS Code ni intégration avec le stockage de secrets de l'éditeur n'est déclarée.
+Le dépôt contient un fichier `.env` suivi par Git : **n'y placez pas de clé
+réelle**. Pour reprendre le projet, prévoyez un stockage local exclu du suivi
+ou le stockage de secrets de VS Code avant tout appel authentifié.
 
-### 1.0.1
+La commande envoie le texte saisi au domaine `api.openai.com`. Elle ne propose
+pas de mode local et ne prend pas en charge les réglages d'un compte ChatGPT.
 
-Fixed issue #.
+## Dans le dépôt
 
-### 1.1.0
+| Fichier | Rôle |
+|---|---|
+| [`src/extension.ts`](src/extension.ts) | activation, saisie, notifications et presse-papiers |
+| [`src/chatgpt.ts`](src/chatgpt.ts) | construction de la requête HTTPS et lecture du texte retourné |
+| [`package.json`](package.json) | commande exposée, dépendances et compilation |
+| [`tsconfig.json`](tsconfig.json) | compilation TypeScript vers `out/` |
+| [`.vscode/launch.json`](.vscode/launch.json) | lancement dans un hôte de développement VS Code |
 
-Added features X, Y, and Z.
+Le dépôt ne fournit pas de tests automatisés. L'entrée `Extension Tests` du
+débogueur référence un chemin de tests qui n'est pas présent dans les sources.
+Le [changelog](CHANGELOG.md) conserve la mention de version initiale.
 
----
+## Contribuer et réutiliser
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Les [issues](https://github.com/AdrienAvalon/VSCode-chatgpt/issues) et les pull
+requests peuvent servir à reprendre le client API, la configuration et la
+gestion des erreurs. Le manifeste attribue le projet à **Adrien CROS**.
+Aucune licence explicite n'est fournie dans le dépôt ; les conditions de
+réutilisation sont à clarifier avec l'auteur.
