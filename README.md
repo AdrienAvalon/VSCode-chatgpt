@@ -1,18 +1,28 @@
 <div align="center">
 
+<img src="docs/assets/readme-hero.svg" alt="VSCode-chatgpt — illustration du flux de saisie d’une extension TypeScript" width="960">
+
 # VSCode-chatgpt
 
-**Un prototype d'extension VS Code pour poser une question depuis l'éditeur.**
+**Explorer le chemin entre une commande VS Code, une question et une réponse.**
 
-Une commande, une zone de saisie et une réponse à afficher ou copier :
-un premier projet TypeScript autour de l'intégration d'une API de génération de texte.
+Un prototype TypeScript d’extension, avec saisie, notification et copie dans
+le presse-papiers. Son client API historique reste à reprendre.
 
-[Explorer le projet](#explorer-en-local) · [Fonctionnement](#ce-qui-est-implémenté) · [État du prototype](#état-du-prototype)
+[![TypeScript](https://img.shields.io/badge/langage-TypeScript-3178c6?style=flat-square&logo=typescript&logoColor=white)](src/extension.ts)
+[![VS Code](https://img.shields.io/badge/cible-VS%20Code-007acc?style=flat-square)](package.json)
+[![Prototype](https://img.shields.io/badge/statut-prototype-d8a657?style=flat-square)](#état-du-prototype)
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-extension-3178c6)](src/extension.ts)
-[![Prototype](https://img.shields.io/badge/statut-prototype-8b7cf6)](#état-du-prototype)
+[Fonctionnement](#ce-qui-est-implémenté) · [État du projet](#état-du-prototype) · [Explorer](#explorer-en-local) · [Configuration](#configuration-et-données)
 
 </div>
+
+Les exemples d’utilisation ci-dessous s’adressent aux personnes disposant des
+autorisations nécessaires. [Droits et conditions de réutilisation](RIGHTS.md).
+
+> [!NOTE]
+> Ce dépôt présente un prototype. L’interface est implémentée ; le client API
+> doit être corrigé avant de pouvoir recevoir une réponse du service.
 
 ## Ce qui est implémenté
 
@@ -94,5 +104,6 @@ Le [changelog](CHANGELOG.md) conserve la mention de version initiale.
 Les [issues](https://github.com/AdrienAvalon/VSCode-chatgpt/issues) et les pull
 requests peuvent servir à reprendre le client API, la configuration et la
 gestion des erreurs. Le manifeste attribue le projet à **Adrien CROS**.
-Aucune licence explicite n'est fournie dans le dépôt ; les conditions de
-réutilisation sont à clarifier avec l'auteur.
+Les contributions originales non déjà licenciées restent à [droits réservés](RIGHTS.md).
+Réutilisation et exploitation commerciale nécessitent un accord écrit préalable ;
+la rémunération commerciale est convenue dans cet accord.
